@@ -1,0 +1,61 @@
+#volumeControl {
+  position: fixed;
+  top: 60px;
+  left: 40px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px;
+  background: rgba(255, 255, 255, 0.848);
+  border-radius: 999px;
+  backdrop-filter: blur(1%);
+  box-shadow: 0 6px 6px rgba(0, 0, 0, 0.15);
+  z-index: 2000;
+  transition: width 0.3s ease, padding 0.3s ease;
+  width: 40px; /* chỉ đủ cho nút icon */
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.983);
+  border-radius: 20px;
+}
+
+/* Khi hover, mở rộng để hiện thanh âm lượng */
+#volumeControl:hover {
+  width: 160px; /* đủ chỗ để kéo */
+  padding: 6px 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.983);
+  border-radius: 20px;
+}
+
+/* Icon */
+#volumeToggle {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+#volumeIcon {
+  width: 24px;
+  height: 24px;
+  filter: brightness(0);
+}
+
+/* Thanh chỉnh âm lượng */
+#volumeSlider {
+  flex: 1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  height: 6px;
+  appearance: none;
+  background: #ccc;
+  border-radius: 6px;
+  margin-left: 0px;
+
+}
+
+/* Hiện thanh trượt khi hover */
+#volumeControl:hover #volumeSlider {
+  opacity: 1;
+  pointer-events: auto;
+}

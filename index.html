@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sinh viên đại học</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="promodo.css" />
+  <link rel="stylesheet" href="volume.css" />
+  <link rel="stylesheet" href="task.css" />
+  <link rel="stylesheet" href="youtube.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <video autoplay muted loop id="bg-video">
+    <source src="https://github.com/demnguocthpt/video2/1.mp3" type="video/mp4" />
+  </video>
+
+  <div id="overlay">
+    <div class="overlay-content">
+      <h1>🎧 Chào mừng bạn</h1>
+      <p>Nhấn vào màn hình để bắt đầu trải nghiệm thư giãn</p>
+    </div>
+  </div>
+
+  <!-- Panel hiển thị Task -->
+ 
+
+<!-- Navigation -->
+<div class="container">
+  <nav class="navbar">
+    <div class="nav-left">
+      <button class="nav-button" id="togglePomodoroBtn">Pomodoro</button>
+    </div>
+    <div class="nav-right">
+      <button class="nav-button" id="toggleTaskPanel">Task</button>
+    </div>
+  </nav>
+</div>
+
+<!-- Panel hiển thị Task (tách ra ngoài navbar) -->
+<div id="taskPanel" style="display: none;">
+  <h3 style="margin-top: 0;">📋 Task List</h3>
+  <ul id="taskList" style="list-style: none; padding-left: 0;"></ul>
+  <input type="text" id="taskInput" placeholder="Thêm công việc..." />
+  <input type="date" id="deadlineInput" />
+  <button id="addTaskBtn">➕ Thêm</button>
+</div>
+
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <h1 class="title">Welcome to <span class="highlight">Sinh viên đại học</span> today</h1>
+    <div class="badge">
+      <img src="3.jpg" class="avatar" />
+      <span>Sever dành cho sinh viên <br /><small>Lucky day!</small></span>
+      <div class="clock-timer">
+        <svg class="waves" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+          <path d="M0,50 C300,150 900,-50 1200,50 L1200,120 L0,120 Z" fill="rgba(255,255,255,0.03)"></path>
+        </svg>
+        <div id="clock">00:00:00</div>
+        <div id="date">--</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Audio -->
+  <audio id="audioPlayer" src="1.mp3" loop></audio>
+
+  <!-- Player Section -->
+  <div class="player">
+    <div class="track-info">
+      <span id="trackTitle" style="cursor: pointer;">Relax Radio</span>
+      <img src="2.png" class="track-img" />
+    </div>
+    <div class="controls">
+      <button id="prevBtn">
+        <img src="https://cdn-icons-png.flaticon.com/512/3495/3495779.png" alt="Previous" width="28" />
+      </button>
+      <button id="playPauseBtn">
+        <img id="playPauseIcon" src="https://cdn-icons-png.flaticon.com/512/3669/3669483.png" alt="Play" width="28" />
+      </button>
+      <button id="nextBtn">
+        <img src="https://cdn-icons-png.flaticon.com/512/3495/3495789.png" alt="Next" width="28" />
+      </button>
+    </div>
+    <div class="progress">
+      <span id="currentTime">0:00</span>
+      <div class="bar">
+        <div class="filled" id="progressBar"></div>
+      </div>
+      <span id="duration">0:00</span>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>© 2025 Sinh viên đại học. All rights reserved.</p>
+  </footer>
+
+  <!-- Chat Button and Box -->
+  <button id="chatBtn" class="chat-button">
+    💬 Gửi tin nhắn
+  </button>
+  <div id="chat-box">
+    <input id="sender" type="text" placeholder="Tên của bạn" />
+    <textarea id="message" placeholder="Nội dung tin nhắn"></textarea>
+    <input id="signature" type="text" placeholder="Ký tên " />
+    <button onclick="sendToDiscord()">📨 Gửi</button>
+  </div>
+
+  <!-- Night Mode Button -->
+  <button id="night-mode" class="night-button">
+    🌙
+  </button>
+
+  <!-- Pomodoro Timer -->
+  <div class="pomodoro" id="pomodoroModule">
+    <div class="timer-box" id="dragTarget">
+      <div class="timer-header" id="dragHandle">
+        <span>Promodo ▼</span>
+        <span id="minimizeBtn">
+          <img src="https://img.icons8.com/ios/50/minimize-window.png" alt="Minimize" width="16" title="mini" />
+        </span>
+      </div>
+      <div class="time-display" id="time">20:00</div>
+      <div class="controls">
+        <button id="startBtn">Start</button>
+        <button id="resetBtn">Reset</button>
+      </div>
+      <div class="mode-tabs">
+        <button class="mode active" data-minutes="20">Pomodoro</button>
+        <button class="mode" data-minutes="5">Short Break</button>
+        <button class="mode" data-minutes="60">Long Break</button>
+        <span class="settings" id="openSettings" title="Cài đặt">⚙️</span>
+        <div class="pomodoro-settings" id="settingsPanel" style="display: none;">
+          <h4>Cài đặt thời gian</h4>
+          <label>Pomodoro (phút): <input type="number" id="setPomodoro" value="20" min="1" /></label><br />
+          <label>Short Break (phút): <input type="number" id="setShortBreak" value="5" min="1" /></label><br />
+          <label>Long Break (phút): <input type="number" id="setLongBreak" value="60" min="1" /></label><br />
+          <button id="saveSettings">Lưu</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Volume -->
+  <div id="volumeControl">
+    <button id="volumeToggle">
+      <img id="volumeIcon" src="https://img.icons8.com/ios-filled/24/speaker.png" alt="Volume" />
+    </button>
+    <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="1" />
+  </div>
+
+
+
+<!--
+<button id="toggleMusic" class="nav-button">🎵 Nhạc</button>
+
+<div id="musicBox" class="music-box" style="display: none;">
+  <div class="music-header">
+    <span>🎶 YouTube Player</span>
+    <button id="closeMusic">✖️</button>
+  </div>
+
+  
+  <input type="text" id="youtubeLink" placeholder="Dán link YouTube..." style="width: 100%; padding: 6px; margin-bottom: 10px; border-radius: 6px; border: 1px solid #ccc;"/>
+
+  <iframe
+    id="ytPlayer"
+    style="display: none;"
+    frameborder="0"
+    allow="autoplay; encrypted-media"
+    allowfullscreen
+  ></iframe>
+
+  <div class="music-controls">
+    <button id="prevTrack">⏮️</button>
+    <button id="playMusic">▶️</button>
+    <button id="pauseMusic">⏸️</button>
+    <button id="nextTrack">⏭️</button>
+    <input type="range" id="musicVolume" min="0" max="100" value="50">
+    <button id="pipBtn">📺</button>
+  </div>
+</div>
+ -->
+
+
+
+  <!-- Scripts -->
+  <script src="youtube.js"></script>
+  <script src="task.js"></script>
+  <script src="promodo.js"></script>
+  <script src="clock.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
